@@ -8,6 +8,7 @@ from requests_html import HTMLSession
 from datetime import datetime
 import socket
 import math
+import colorsys
 
 from flask import Flask, render_template, redirect, request
 app = Flask(__name__)
@@ -65,7 +66,7 @@ def create_devices_page():
                                         <button class='cb btn btn-"""+power_button_type+"""'
                                             onclick="toggle_power('"""+device+"""')"
                                             id="btn_toggle_power-"""+device+""""
-                                            style='margin:0px; margin-top:-2px;' aria-label="Lightbulb"><i id="btn_toggle_power_icon-"""+device+"""" class="mdi mdi-power"
+                                            style='margin:0px; margin-top:-2px; margin-bottom: 10px;' aria-label="Lightbulb"><i id="btn_toggle_power_icon-"""+device+"""" class="mdi mdi-power"
                                             aria-hidden="true"></i> <span id="btn_toggle_power_text-"""+device+"""">""" + power_states.get(device).title() +"""</span></button>
                                     </li>
                                     <li class="list-group-item"><a name='device_button'
@@ -99,8 +100,19 @@ def create_control_page(ip):
     mac = status.get("Mac")
     power_status = ""
     version = status.get("Version").split("(")[0]
+    signal_strength = int(status.get("Signal"))
+    signal_level = ""
 
     power_button_type = ""
+
+    if signal_strength >= -50:
+        signal_level = "4"
+    elif signal_strength >= -60:
+        signal_level = "3"
+    elif signal_strength >= -70:
+        signal_level = "2"
+    else:
+        signal_level = "1"
 
     device_icon = ""
     if "Color" in status:
@@ -133,7 +145,7 @@ def create_control_page(ip):
             status_print += "<p><span>" + key + "</span>: <span>" + status.get(key) + "</span></p>"
     end_time = datetime.now()
     time_to_generate = truncate((end_time-start_time).total_seconds(), 2)
-    return render_template("control_page.html", IP=ip, Title=status.get("FriendlyName"), GenTime=time_to_generate, InstanceName=_instance_name, PowerStatus = power_status, PowerButtonType=power_button_type, Status=status_print, DeviceIcon = device_icon, MAC = mac, Version=version)
+    return render_template("control_page.html", IP=ip, WifiStrength = str(signal_strength), WifiStrengthLevel = signal_level, Title=status.get("FriendlyName"), GenTime=time_to_generate, InstanceName=_instance_name, PowerStatus = power_status, PowerButtonType=power_button_type, Status=status_print, DeviceIcon = device_icon, MAC = mac, Version=version)
 
 #Renders the log page from template at url/logs/
 @app.route('/logs/<ip>/')
