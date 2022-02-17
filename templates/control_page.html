@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script>
+    function toggle_power(){
+      fetch('/command/{{ IP }}/Power%20TOGGLE');
+
+      var toggle_button = document.getElementById("btn_toggle_power");
+      var toggle_label = document.getElementById("btn_toggle_power_text")
+
+      var device_icon = document.getElementById("device_icon")
+
+      if(toggle_label.innerText == "Off"){
+        toggle_label.textContent = "On";
+        
+        if(device_icon.className == "mdi mdi-power-plug-off"){
+          device_icon.className = "mdi mdi-power-plug";
+        }else{
+          device_icon.className = "mdi mdi-lightbulb";
+        }
+
+        toggle_button.className = "cb btn btn-success"
+      }else{
+        toggle_label.textContent = "Off";
+
+        if(device_icon.className == "mdi mdi-power-plug"){
+          device_icon.className = "mdi mdi-power-plug-off";
+        }else{
+          device_icon.className = "mdi mdi-lightbulb-off";
+        }
+
+        toggle_button.className = "cb btn btn-danger"
+      }
+    };
+
+    function restart(){
+      fetch('/command/{{ IP }}/Restart%201');
+    };
+    function sendCommand(){
+      var link = "/command/{{ IP }}/" + document.getElementById("cmd").value;
+      window.open(link,"_self");
+    };
+  </script>
+  <link crossorigin="anonymous"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.5.95/css/materialdesignicons.min.css"
+        rel="stylesheet">
+  <link href="{{ url_for('static',filename='style/style.css') }}"
+        rel="stylesheet">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap" rel="stylesheet">
+
+  <link rel="icon" href="https://tasmota.github.io/docs/_media/favicon.ico">
+  <title>{{ InstanceName }}</title>
+</head>
+<body>
+  <div id='header'>
+    <a href="/" class="btn btn-outline-light" id="button-float">Back</a>
+    <a href="/logs/{{ IP }}/" class="btn btn-outline-light" id="button-float-right">Logs</a>
+    <h2 class="title"
+          style="text-align: center; font-family: 'Roboto', sans-serif; font-weight: 300; line-height: 60px;">{{ InstanceName }}</h2>
+  </div>
+      <div id="content">
+        <div class='card bg-light mb-3' style='width: 30rem;'>
+          <div class='card-body'>
+              <h3 class='card-title' style='margin-bottom: -3px;'><i id='device_icon' class="mdi mdi-{{ DeviceIcon }}"></i><br>{{ Title }}</h3>
+              <p class='card-text' style='color:grey; font-size: 8pt; margin-bottom: 0px;'>tasmota {{ Version }}</p>
+              <p class='card-text' style='color: grey; font-size: 10pt; margin-bottom: 0px;'>IP: {{ IP }}</p>
+              <p class='card-text' style='color:grey; font-size: 10pt; margin-bottom: -5px;'>MAC: {{ MAC }}</p>
+            </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <button class='cb btn btn-{{ PowerButtonType }}'
+              onclick="toggle_power()"
+              id="btn_toggle_power"
+              style='margin:0px; margin-top:-2px;' aria-label="Lightbulb"><i class="mdi mdi-power"
+              aria-hidden="true"></i> <span id="btn_toggle_power_text">{{ PowerStatus }}</span></button>
+            </li>
+            <li class="list-group-item">
+              <p style="margin:5px;">Command:</p>
+              <input name="command" class="form-control" style="margin:auto;" type="text" value="" id="cmd">
+              <button type="submit" id="cmd_button" style="margin-top: 15px;" class='btn btn-primary' onClick="sendCommand()">Send</button>
+              <script>
+                var input = document.getElementById("cmd");
+
+                // Execute a function when the user releases a key on the keyboard
+                input.addEventListener("keyup", function(event) {
+                  // Number 13 is the "Enter" key on the keyboard
+                  if (event.keyCode === 13) {
+                    // Cancel the default action, if needed
+                    event.preventDefault();
+                    // Trigger the button element with a click
+                    sendCommand();
+                  }
+                });
+              </script>
+            </li>
+            <li class="list-group-item">
+              <button class='cb btn btn-danger' id='btn_restart' onclick="restart()" aria-label='Restart'><i class="mdi mdi-restart" aria-hidden="true"></i>Restart</button>
+            </li>
+          </ul>
+        </div>
+        <div id="footer">Page took {{ GenTime }} seconds to generate.</div>
+</body>
+</html>

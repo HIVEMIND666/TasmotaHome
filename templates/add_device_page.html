@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link crossorigin="anonymous"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.5.95/css/materialdesignicons.min.css"
+        rel="stylesheet">
+  <link href="{{ url_for('static',filename='style/style.css') }}"
+        rel="stylesheet">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap" rel="stylesheet">
+
+  <title>{{ InstanceName }}</title>
+</head>
+<body>
+  <div id='header'>
+    <a href="/" class="btn btn-outline-light" id="button-float">Back</a>
+    <h2 class="title"
+          style="text-align: center; font-family: 'Roboto', sans-serif; font-weight: 300; line-height: 60px;">{{ InstanceName }}</h2>
+  </div>
+  <div id='content'>
+    <form action="/add"  method="POST">
+      <p>Device Address:</p><br /> 
+      <input name="ip" type="text" style="width:25%; margin:auto;" class='form-control' value="192.168.2." /> <br /> 
+      <button type="submit" class='btn btn-primary' value="Submit">Add</button>
+    </form>
+  </div>
+  <div id="footer">
+    <a href='https://github.com/HIVEMIND666'>
+      <img src="https://secure.gravatar.com/avatar/33bfaeb92178ff24814406dd2952b2e5.png" style="border-radius: 50%; margin-right: 10px;" height=25px width=25px>
+      HIVEMIND666
+    </a>
+  </div>
+</body>
+</html>

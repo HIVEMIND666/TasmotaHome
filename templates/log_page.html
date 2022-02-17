@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link crossorigin="anonymous"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.5.95/css/materialdesignicons.min.css"
+        rel="stylesheet">
+  <link href="{{ url_for('static',filename='style/style.css') }}"
+        rel="stylesheet">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap" rel="stylesheet">
+  <title>PyHome</title>
+</head>
+<body>
+  <div id='header'>
+    <a href="/" class="btn btn-outline-light" id="button-float">Back</a>
+    <h2 class="title"
+          style="text-align: center; font-family: 'Roboto', sans-serif; font-weight: 300; line-height: 60px;">{{ InstanceName }}</h2>
+  </div>
+  <div id="content">
+    <div class='card bg-light mb-3' style='width: 40rem; height: 30rem;' >
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <table class="table table-striped" style="width: 100%; margin: auto;">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 33%;">Time</th>
+                <th scope="col" style="width: 33%;">Device</th>
+                <th scope="col" style="width: 33%;">Command</th>
+              </tr>
+            </thead>
+            </table>
+        </li>
+        <li class="list-group-item" style='height: 30rem; overflow-y: scroll;'>
+          <table class="table table-striped" style="width: 100%; margin: auto;">
+            <tbody>
+            {{ Logs|safe }}
+            </tbody>
+          </table>
+        </li>
+      </ul>
+    </div>
+  </div>
+      <div id="footer">Page took {{ GenTime }} seconds to generate.</div>
+</body>
+</html>
